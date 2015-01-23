@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - cmsphp@localhost" uuid="9206c93e-19fd-4208-b617-f2c005831d50">
+    <database-info product="MySQL" version="5.5.41-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="cmsphp"/>
+    <table name="articles" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="createdByIndicator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="createdate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="title" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="contentArea_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="page_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="body" sqlType="MEDIUMTEXT" precision="16777215" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="modifyBy" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <foreign-key name="fk_contentAreaID" columns="contentArea_id" ref-table="contentarea" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_createByID" columns="createdByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_modifyByID" columns="modifyBy" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_pageID" columns="page_id" ref-table="pages" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_articles_pages1_idx" unique="false" columns="page_id"/>
+      <index name="fk_articles_users1_idx" unique="false" columns="createdByIndicator"/>
+      <index name="fk_articles_users2_idx" unique="false" columns="modifyBy"/>
+      <index name="fk_posts_contantArea2_idx" unique="false" columns="contentArea_id"/>
+    </table>
+    <table name="contentarea" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="alias" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="creatByIndicator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="creationDate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="modifyByIndicator" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="fk_contantArea_users1" columns="creatByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_contantArea_users2" columns="modifyByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_contentAreaID" table="articles" schema="" catalog="cmsphp" columns="contentArea_id"/>
+      <index name="fk_contantArea_users1_idx" unique="false" columns="creatByIndicator"/>
+      <index name="fk_contantArea_users2_idx" unique="false" columns="modifyByIndicator"/>
+    </table>
+    <table name="pages" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="alias" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="createdByIndicator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="creationDate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="modifyByIndicator" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="fk_pages_users1" columns="modifyByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_pages_users2" columns="createdByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_pageID" table="articles" schema="" catalog="cmsphp" columns="page_id"/>
+      <index name="fk_pages_users1_idx" unique="false" columns="modifyByIndicator"/>
+      <index name="fk_pages_users2_idx" unique="false" columns="createdByIndicator"/>
+    </table>
+    <table name="roles" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="fk_users_roles_roles1" table="users_roles" schema="" catalog="cmsphp" columns="roles_id"/>
+    </table>
+    <table name="stylesheet" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="content" sqlType="MEDIUMTEXT" precision="16777215" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="activeState" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="createsByIndicator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="creationDate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="lastModifyBy" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="fk_styleSheet_users3" columns="createsByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_styleSheet_users4" columns="lastModifyBy" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_styleSheet_users3" unique="false" columns="createsByIndicator"/>
+      <index name="fk_styleSheet_users4" unique="false" columns="lastModifyBy"/>
+    </table>
+    <table name="users" schema="" catalog="cmsphp" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="firstName" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="lastName" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR" precision="45" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="createdByIndicator" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="creationDate" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="modifyByIndicator" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="fk_createBy" columns="createdByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_modifyBy" columns="modifyByIndicator" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="fk_createByID" table="articles" schema="" catalog="cmsphp" columns="createdByIndicator"/>
+      <exported-key name="fk_modifyByID" table="articles" schema="" catalog="cmsphp" columns="modifyBy"/>
+      <exported-key name="fk_contantArea_users1" table="contentarea" schema="" catalog="cmsphp" columns="creatByIndicator"/>
+      <exported-key name="fk_contantArea_users2" table="contentarea" schema="" catalog="cmsphp" columns="modifyByIndicator"/>
+      <exported-key name="fk_pages_users1" table="pages" schema="" catalog="cmsphp" columns="modifyByIndicator"/>
+      <exported-key name="fk_pages_users2" table="pages" schema="" catalog="cmsphp" columns="createdByIndicator"/>
+      <exported-key name="fk_styleSheet_users3" table="stylesheet" schema="" catalog="cmsphp" columns="createsByIndicator"/>
+      <exported-key name="fk_styleSheet_users4" table="stylesheet" schema="" catalog="cmsphp" columns="lastModifyBy"/>
+      <exported-key name="fk_createBy" table="users" schema="" catalog="cmsphp" columns="createdByIndicator"/>
+      <exported-key name="fk_modifyBy" table="users" schema="" catalog="cmsphp" columns="modifyByIndicator"/>
+      <exported-key name="fk_users_roles_users1" table="users_roles" schema="" catalog="cmsphp" columns="user_id"/>
+      <index name="createByIndicator" unique="false" columns="createdByIndicator"/>
+    </table>
+    <table name="users_roles" schema="" catalog="cmsphp" type="TABLE">
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="roles_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="user_id,roles_id"/>
+      <foreign-key name="fk_users_roles_roles1" columns="roles_id" ref-table="roles" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="fk_users_roles_users1" columns="user_id" ref-table="users" ref-schema="" ref-catalog="cmsphp" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="fk_users_roles_roles1_idx" unique="false" columns="roles_id"/>
+    </table>
+  </data-source>
+</component>
