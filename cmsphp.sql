@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2015 at 08:40 AM
+-- Generation Time: Jan 23, 2015 at 09:37 AM
 -- Server version: 5.5.40
 -- PHP Version: 5.4.36-0+deb7u3
 
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `title` varchar(128) NOT NULL,
   `description` longtext NOT NULL,
   `contentArea_id` int(11) NOT NULL,
-  `page_id` int(11) NOT NULL,
+  `page_id` int(11) DEFAULT NULL,
+  `allPages` tinyint(1) DEFAULT NULL,
   `body` mediumtext NOT NULL,
   `modifyBy` int(11) DEFAULT NULL,
   `modifyDate` datetime DEFAULT NULL,
@@ -48,12 +49,12 @@ CREATE TABLE IF NOT EXISTS `articles` (
 -- Dumping data for table `articles`
 --
 
-INSERT INTO `articles` (`id`, `createdByIndicator`, `createdate`, `title`, `description`, `contentArea_id`, `page_id`, `body`, `modifyBy`, `modifyDate`) VALUES
-(1, 1, '2015-01-20 18:46:30', 'Testing', 'This is a test.', 1, 1, '<H1>Testing a content area, and a article of content!</h1>\r\n\r\n<h3>Nullam est mi, suscipit ut mattis in, hendrerit eget erat. Aenean in lectus nec est mollis volutpat in sed nulla. Aliquam commodo dolor eget felis tincidunt, non mattis nunc vehicula. Etiam auctor est eu justo gravida imperdiet. Pellentesque sed sapien et mi ultricies sollicitudin a nec arcu. Ut elementum purus lorem, ut porta felis congue et. Vestibulum sit amet erat lectus. Donec iaculis nisi lectus, a sagittis ligula ultrices eu. Nunc aliquam urna eget odio scelerisque lobortis. </h3>', NULL, NULL),
-(2, 1, '2015-01-21 12:37:58', 'Products Page', 'This is a test product page', 1, 2, '<p>This is a samnple products page.</p><br/><h1>DEBUG</h1>', NULL, NULL),
-(3, 1, '2015-01-21 13:06:45', 'Testing the body area!', 'AKSFAGD', 2, 1, '<p>This is clearly a paragraph.</p><br/>\r\n<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>', NULL, NULL),
-(4, 1, '2015-01-21 13:15:06', 'quote', 'Its a quote of Lorem Ipsum.', 3, 1, '<blockquote>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</blockquote>', NULL, NULL),
-(5, 1, '2015-01-21 13:20:22', 'footer', 'ITS A FOOTAHR', 4, 1, '<p class="foot">Vivamus ac posuere velit. Ut lobortis, urna id vehicula fringilla, turpis felis sodales ex, non ultricies erat felis nec ipsum. Donec ligula nulla, consectetur ut malesuada et, egestas ut quam. Donec vitae commodo turpis. Proin elementum ut erat ac molestie. Praesent interdum nisl id enim accumsan iaculis. Donec vulputate nunc id nisl facilisis egestas. Aenean laoreet tincidunt lacus non viverra. Mauris dolor lectus, sollicitudin ut consequat ullamcorper, mollis eu nisi.</p>', NULL, NULL);
+INSERT INTO `articles` (`id`, `createdByIndicator`, `createdate`, `title`, `description`, `contentArea_id`, `page_id`, `allPages`, `body`, `modifyBy`, `modifyDate`) VALUES
+(1, 1, '2015-01-20 18:46:30', 'Testing', 'This is a test.', 1, 1, NULL, '<H1>Testing a content area, and a article of content!</h1>\r\n\r\n<h3>Nullam est mi, suscipit ut mattis in, hendrerit eget erat. Aenean in lectus nec est mollis volutpat in sed nulla. Aliquam commodo dolor eget felis tincidunt, non mattis nunc vehicula. Etiam auctor est eu justo gravida imperdiet. Pellentesque sed sapien et mi ultricies sollicitudin a nec arcu. Ut elementum purus lorem, ut porta felis congue et. Vestibulum sit amet erat lectus. Donec iaculis nisi lectus, a sagittis ligula ultrices eu. Nunc aliquam urna eget odio scelerisque lobortis. </h3>', NULL, NULL),
+(2, 1, '2015-01-21 12:37:58', 'Products Page', 'This is a test product page', 1, 2, NULL, '<p>This is a samnple products page.</p><br/><h1>DEBUG</h1>', NULL, NULL),
+(3, 1, '2015-01-21 13:06:45', 'Testing the body area!', 'AKSFAGD', 2, 1, NULL, '<p>This is clearly a paragraph.</p><br/>\r\n<p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>', NULL, NULL),
+(4, 1, '2015-01-21 13:15:06', 'quote', 'Its a quote of Lorem Ipsum.', 3, 1, NULL, '<blockquote>"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"</blockquote>', NULL, NULL),
+(5, 1, '2015-01-21 13:20:22', 'footer', 'ITS A FOOTAHR', 4, 1, NULL, '<p class="foot">Vivamus ac posuere velit. Ut lobortis, urna id vehicula fringilla, turpis felis sodales ex, non ultricies erat felis nec ipsum. Donec ligula nulla, consectetur ut malesuada et, egestas ut quam. Donec vitae commodo turpis. Proin elementum ut erat ac molestie. Praesent interdum nisl id enim accumsan iaculis. Donec vulputate nunc id nisl facilisis egestas. Aenean laoreet tincidunt lacus non viverra. Mauris dolor lectus, sollicitudin ut consequat ullamcorper, mollis eu nisi.</p>', NULL, NULL);
 
 -- --------------------------------------------------------
 
