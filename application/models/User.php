@@ -12,18 +12,20 @@ class User {
     private $lastName;
     private $username;
     private $password;
+    private $roles;
     private $createdByIndicator;
     private $creationDate;
     private $modifyByIndicator;
     private $modifyDate;
 
-    function __construct($id, $firstName, $lastName, $username, $password, $createdByIndicator, $creationDate, $modifyByIndicator, $modifyDate)
+    function __construct($id, $firstName, $lastName, $username, $password, $roles, $createdByIndicator, $creationDate, $modifyByIndicator, $modifyDate)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->username = $username;
         $this->password = $password;
+        $this->roles = $roles;
         $this->createdByIndicator = $createdByIndicator;
         $this->creationDate = $creationDate;
         $this->modifyByIndicator = $modifyByIndicator;
@@ -68,6 +70,14 @@ class User {
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 
     /**

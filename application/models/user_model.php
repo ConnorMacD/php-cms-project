@@ -17,8 +17,14 @@ class user_model extends CI_Model {
 
         $query = $this->db->get()->result_array();
 
+        $this->db->select('roles_id');
+        $this->db->from('users_roles');
+        $this->db->where('user_id',$query['id']);
+
+        $roleArray = $this->db->get()->result_array();
+
         $user = new User($query['id'], $query['firstName'], $query['lastName'], $query['username'], $query['password'],
-            $query['createdByIndicator'], $query['creationDate'], $query['modifyByIndicator'], $query['modifyDate']);
+            $roleArray, $query['createdByIndicator'], $query['creationDate'], $query['modifyByIndicator'], $query['modifyDate']);
 
         return $user;
     }
