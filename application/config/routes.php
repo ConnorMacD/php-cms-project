@@ -40,6 +40,7 @@
 
 $route['default_controller'] = "homepage";
 $route['page/(:any)'] = "homepage/loadPage/$1";
+$route['login'] = "login/index";
 
 
 $route['404_override'] = '';
