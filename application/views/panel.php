@@ -10,7 +10,6 @@
 <html>
     <head>
         <title>Back-end Panel</title>
-        <?php $data = $this->session->userdata('logged_in'); ?>
     </head>
 
     <body>

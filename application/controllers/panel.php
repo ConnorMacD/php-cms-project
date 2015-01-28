@@ -12,7 +12,8 @@ class Panel extends CI_Controller {
         if($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             //just for testing!
-            $data['username'] = $session_data['username'];
+            $data['roles'] = $session_data['roles'];
+            $data['name'] = $session_data['name'];
             $this->load->view('panel', $data);
         } else {
             //No session? No access.
