@@ -21,6 +21,26 @@ class Panel extends CI_Controller {
         }
     }
 
+    /*Add each CRUD element here, and then use routes to access it.*/
+
+    function stylesheets() {
+        try {
+            //adding checking against user auth later
+            $crud = new grocery_CRUD();
+            $crud->set_theme('datatables');
+            $crud->set_table('stylesheet');
+            $crud->display_as('activeState','Enabled');
+            $crud->set_subject('stylesheet');
+            //$crud->set_relation('createsByIndicator','users','firstName');
+
+            $output = $crud->render();
+
+            $this->load->view('crud_view', $output);
+        } catch (Exception $E) {
+            show_error($E->getMessage(). '---'.$E->getTraceAsString());
+        }
+    }
+
     function logout() {
         $this->session->unset_userdata('logged_in');
         session_destroy();
