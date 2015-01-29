@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source name="MySQL - cmsphp@localhost" uuid="9206c93e-19fd-4208-b617-f2c005831d50">
-    <database-info product="MySQL" version="5.5.40-0+wheezy1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+    <database-info product="MySQL" version="5.5.41-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
-    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
     <schema name="" catalog="cmsphp"/>
     <schema name="" catalog="information_schema"/>
     <schema name="" catalog="mysql"/>
@@ -18,7 +18,8 @@
       <column name="title" sqlType="VARCHAR" precision="128" scale="0" nullable="false" jdbcType="12"/>
       <column name="description" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="false" jdbcType="-1"/>
       <column name="contentArea_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="page_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="page_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="allPages" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="body" sqlType="MEDIUMTEXT" precision="16777215" scale="0" nullable="false" jdbcType="-1"/>
       <column name="modifyBy" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="modifyDate" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>

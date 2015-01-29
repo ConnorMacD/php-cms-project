@@ -19,10 +19,10 @@
 
 
         <!--Editor roles? Link those pages here-->
-        <?php if(in_array(2, $data['roles'])):?>
+        <?php if(in_array(2, $roles)):?>
             <h2>Editor Settings</h2>
             <ul>
-                <li><?php echo anchor("panel/spreadsheets/", "Edit Spreadsheets")?></li>
+                <li><?php echo anchor("panel/stylesheets/", "Edit Stylesheets")?></li>
             </ul>
         <?php endif ?>
     </body>
