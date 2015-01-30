@@ -21,6 +21,37 @@ class Panel extends CI_Controller {
         }
     }
 
+    function stylesheets() {
+        $crud = new ajax_grocery_CRUD();
+
+        $crud->set_table('stylesheet')
+             ->columns('name','content','description','activeState',
+                 'createsByIndicator', 'creationDate','lastModifyBy',
+                 'modifyDate');
+        $crud->add_fields('name','content','description','activeState','createsByIndicator','creationDate');
+        //$session_data = $this->session->userdata('logged_in');
+        //$crud->field_set_defaults('createsByIndicator','readonly', '1');
+        $crud->field_type('createsByIndicator','hidden',1);
+        $crud->field_type('creationDate','hidden','date');
+        //$crud->field_set_defaults('creationDate','readonly',time('mm/dd/yy h:i:s'));
+        //$crud->change_field_type('createsByIndicator', 'disabled');
+        $output = $crud->render();
+
+        $this->load->view('crud_view',$output);
+
+    }
+
+    function articles() {
+        $crud = new ajax_grocery_CRUD();
+        $crud->set_table('articles');
+        $crud->set_relation('contentArea_id', 'contentarea','name');
+        $crud->set_relation('page_id', 'pages', 'name');
+        $crud->add_fields('title', 'description','contentArea_id','page_id','allPages','body','createdByIndicator','createDate');
+
+        $output = $crud->render();
+        $this->load->view('crud_view',$output);
+    }
+
     function logout() {
         $this->session->unset_userdata('logged_in');
         session_destroy();
