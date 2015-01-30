@@ -46,6 +46,7 @@ class Panel extends CI_Controller {
         $crud->set_table('articles');
         $crud->set_relation('contentArea_id', 'contentarea','name');
         $crud->set_relation('page_id', 'pages', 'name');
+        $crud->set_relation('createdByIndicator','users','username');
         $crud->add_fields('title', 'description','contentArea_id','page_id','allPages','body','createdByIndicator','createDate');
 
         $output = $crud->render();
