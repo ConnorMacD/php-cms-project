@@ -69,6 +69,20 @@ class Panel extends CI_Controller {
 
     }
 
+    function pages() {
+
+        $crud = new ajax_grocery_CRUD();
+        $crud->set_table('pages');
+        $crud->set_relation('createdByIndicator','users', 'username');
+        $crud->set_relation('modifyByIndicator','users', 'username');
+        $crud->add_fields('name','alias','description','createdByIndicator','creationDate');
+
+        $output = $crud->render();
+        $this->load->view('crud_view',$output);
+
+    }
+
+
     function articles() {
         $crud = new ajax_grocery_CRUD();
         $crud->set_table('articles');
@@ -80,6 +94,22 @@ class Panel extends CI_Controller {
         $output = $crud->render();
         $this->load->view('crud_view',$output);
     }
+
+
+    function contentarea() {
+
+        $crud = new ajax_grocery_CRUD();
+        $crud->set_table('contentarea');
+        $crud->set_relation('creatByIndicator','users', 'username');
+        $crud->add_fields('name','alias','description','creatByIndicator','creationDate');
+
+
+
+        $output = $crud->render();
+        $this->load->view('crud_view',$output);
+
+    }
+
 
     function logout() {
         $this->session->unset_userdata('logged_in');
