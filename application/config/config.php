@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/hashedtox/old/inet2005group-cmm/';
+$config['base_url']	= 'http://localhost/inet2005group-cmm/';
 
 /*
 |--------------------------------------------------------------------------

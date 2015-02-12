@@ -2493,6 +2493,12 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		if(!$using_ajax)
 		{
+
+			$state = $field_info->extras[6]; // add|edit| ..etc
+			$default_value = $field_info->extras[5];
+			if ($state === 'add')
+				$value = $default_value;
+
 			$options_array = $this->get_relation_array($field_info->extras);
 			foreach($options_array as $option_value => $option)
 			{
@@ -5273,9 +5279,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 * @param mixed $where_clause
 	 * @param string $order_by
 	 */
-	public function set_relation($field_name , $related_table, $related_title_field, $where_clause = null, $order_by = null)
+	public function set_relation($field_name , $related_table, $related_title_field, $where_clause = null, $order_by = null , $default_value=null)
 	{
-		$this->relation[$field_name] = array($field_name, $related_table,$related_title_field, $where_clause, $order_by);
+		$this->relation[$field_name] = array($field_name, $related_table,$related_title_field, $where_clause, $order_by, $default_value, $this->getState());
 		return $this;
 	}
 

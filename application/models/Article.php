@@ -10,14 +10,16 @@ class Article {
     private $id;
     private $title;
     private $body;
+    private $allPages;
     private $description;
     private $contentAreaId;
 
-    function __construct($id, $title, $body, $description, $area)
+    function __construct($id, $title, $body, $allPages, $description, $area)
     {
         $this->id = $id;
         $this->title = $title;
         $this->body = $body;
+        $this->allPages = $allPages;
         $this->description = $description;
         $this->contentAreaId = $area;
     }
@@ -51,6 +53,14 @@ class Article {
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllPages()
+    {
+        return $this->allPages;
     }
 
     /**

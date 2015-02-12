@@ -23,10 +23,7 @@ class Panel extends CI_Controller {
 
     /*
      * TODO: Add more style to the back-end panel
-     * TODO: Figure out why field_type and set_relation do not work together
-     * TODO: Try the latest Grocery CRUD because this really sucks.
-     * TODO: 'roles' table. 'change password' form.
-     * TODO: Default values.
+     * TODO: 'change password' form.
      * */
 
     function stylesheets() {
@@ -46,12 +43,18 @@ class Panel extends CI_Controller {
                 //So in this case, the createsByIndicator relates to the 'user' table, and will show 'username' on a related field.
 
                 //$crud->field_type('createsByIndicator','hidden');
+                $crud->field_type('createdByIndicator','readonly','');
+                $crud->field_type('modifyBy','readonly','');
                 $crud->field_type('creationDate', 'hidden', date("Y-m-d H:i:s"));
                 $crud->field_type('modifyDate', 'hidden', date("Y-m-d H:i:s"));
 
                 $session_data = $this->session->userdata('logged_in');
                 $crud->set_relation('createsByIndicator', 'users', 'username', null, null, $default_value = $session_data['id']);
                 $crud->set_relation('lastModifyBy', 'users', 'username', null, null, $default_value = $session_data['id']);
+
+                //set callbacks
+                $crud->callback_before_insert(array($this, '_on_stylesheet_create'));
+                $crud->callback_before_update(array($this, '_on_stylesheet_update'));
 
                 //$crud->field_type('createsByIndicator','dropdown', 1);
                 //Controls what fields are shown on the 'add' stylesheets page.
@@ -100,6 +103,7 @@ class Panel extends CI_Controller {
                 $session_data = $this->session->userdata('logged_in');
                 $crud->set_relation('createdByIndicator','users', 'username',null,null,$default_value = $session_data['id']);
                 $crud->set_relation('modifyByIndicator','users', 'username',null,null,$default_value = $session_data['id']);
+
                 $crud->field_type('modifyDate','hidden',date("Y-m-d H:i:s"));
                 $crud->field_type('creationDate','hidden',date("Y-m-d H:i:s"));
                 $crud->add_fields('name','alias','description','createdByIndicator','creationDate');
@@ -128,10 +132,16 @@ class Panel extends CI_Controller {
                 $session_data = $this->session->userdata('logged_in');
                 $crud->set_relation('contentArea_id', 'contentarea','name');
                 $crud->set_relation('page_id', 'pages', 'name');
-                $crud->set_relation('createdByIndicator','users','username',null,null,$default_value = $session_data['id']);
+                $crud->set_relation('createdByIndicator','users','username');
                 $crud->set_relation('ModifyBy','users','username');
-                $crud->add_fields('title', 'description','contentArea_id','page_id','allPages','body','createdByIndicator','createDate');
+                $crud->add_fields('title', 'description','contentArea_id','page_id','allPages','body','createdByIndicator','createdate');
+                $crud->edit_fields('title','description','contentArea_id','page_id','allPages','body','modifyBy','modifyDate');
 
+                $crud->callback_before_insert(array($this, '_on_article_create'));
+                $crud->callback_before_update(array($this, '_on_article_update'));
+
+                $crud->field_type('createdByIndicator','readonly',123);
+                $crud->field_type('modifyBy','readonly',123);
                 $crud->field_type('modifyDate','hidden',date("Y-m-d H:i:s"));
                 $crud->field_type('createdate','hidden',date("Y-m-d H:i:s"));
 
@@ -156,13 +166,20 @@ class Panel extends CI_Controller {
                 $crud = new ajax_grocery_CRUD();
                 $session_data = $this->session->userdata('logged_in');
                 $crud->set_table('contentarea');
+                $crud->set_subject('contentarea');
                 $crud->set_relation('creatByIndicator','users', 'username');
                 $crud->set_relation('modifyByIndicator','users', 'username');
                 $crud->add_fields('name','alias','description','creatByIndicator','creationDate');
                 $crud->edit_fields('name','alias','description','modifyByIndicator','modifyDate');
 
+                $crud->callback_before_insert(array($this, 'on_contentarea_create'));
+                $crud->callback_before_update(array($this, 'on_contentarea_update'));
+
+                $crud->field_type('creatByIndicator','readonly','');
+                $crud->field_type('modifyByIndicator','readonly','');
                 $crud->field_type('modifyDate','hidden',date("Y-m-d H:i:s"));
                 $crud->field_type('creationDate','hidden',date("Y-m-d H:i:s"));
+
                 $output = $crud->render();
                 $this->load->view('crud_view',$output);
 
@@ -181,31 +198,28 @@ class Panel extends CI_Controller {
         if($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if (in_array(3, $session_data['roles'])) {
+
                 $crud = new ajax_grocery_CRUD();
-                $crud->set_table('users')->columns('firstName','lastName','username','password','createdByIndicator','creationDate','modifyByIndicator','modifyDate');
-                $crud->set_relation('createdByIndicator','users','username', null,null,$default_value = $session_data['id']);
-                $crud->set_relation('modifyByIndicator','users','username', null,null,$default_value = $session_data['id']);
 
-                //Setting this absolutely RUINS everything.
-                //We cannot use this because it ruins all dropdown boxes.
-                //We also cannot use 'set_relation' and 'field_type' in the same function. Why? WHO KNOWS.
-                //$crud->set_relation_n_n('roles','users_roles','roles','roles_id','user_id','name');
-                $crud->unique_fields('username');
-                $crud->add_fields('username','firstName','lastName','password','createdByIndicator','creationDate');
-                $crud->edit_fields('firstName','lastName','password','modifyByIndicator','modifyDate');
+                $crud->set_table('users');
+                $crud->set_subject('users');
+                $crud->required_fields('username', 'firstName', 'lastName');
+                $crud->set_relation('createdByIndicator', 'users', 'username');
+                $crud->set_relation('modifyByIndicator', 'users', 'username');
+                $crud->add_fields('username', 'firstName', 'lastName', 'password', 'createdByIndicator', 'creationDate');
+                $crud->edit_fields('firstName', 'lastName', 'password', 'modifyByIndicator', 'modifyDate');
 
-                $crud->callback_edit_field('password',array($this, 'prevent_user_password_edit'));
-                $crud->callback_before_insert('password', array($this, '_hash_password_before_insert'));
+                $crud->callback_edit_field('password', array($this, 'prevent_user_password_edit'));
+                $crud->callback_before_insert(array($this, '_hash_password_before_insert'));
+                $crud->callback_before_update(array($this, '_on_user_changed'));
 
-                $id = $session_data['id'];
-                //$crud->field_type('modifyByIndicator','hidden', $id);
-                $crud->field_type('modifyDate','hidden',date("Y-m-d H:i:s"));
-                $crud->field_type('creationDate','hidden',date("Y-m-d H:i:s"));
-
-
+                $crud->field_type('createdByIndicator', 'readonly', 1);
+                $crud->field_type('modifyByIndicator', 'readonly', 1);
+                $crud->field_type('modifyDate', 'hidden', date("Y-m-d H:i:s"));
+                $crud->field_type('creationDate', 'hidden', date("Y-m-d H:i:s"));
                 $output = $crud->render();
-
                 $this->load->view('crud_view', $output);
+
             } else {
                 //No session? No access.
                 redirect('login','refresh');
@@ -216,24 +230,122 @@ class Panel extends CI_Controller {
         }
     }
 
+
+    //roles crud
     function roles() {
-        $crud = new ajax_grocery_CRUD();
+        //add quick checking
+        $crud = new grocery_CRUD();
+
+        $crud->set_table('users_roles');
+        $crud->set_subject('role');
+
+        $crud->set_relation('user_id','users','username');
+        $crud->set_relation('roles_id','roles','name');
+
+        $output = $crud->render();
+
+        $this->load->view('crud_view',$output);
     }
 
-    function prevent_user_password_edit() {
-        return "Please use the 'Change User Password' option to change passwords.";
-    }
 
-    function _hash_password_before_insert($post_array) {
-        $options = [
-          'cost' => 15
-        ];
-        $post_array['password'] = password_hash($post_array['password'],PASSWORD_DEFAULT, $options);
+    //articles callbacks
+    //--------------------------------------------------------
+    function _on_article_create($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['createdByIndicator'] = $session_data['id'];
 
         return $post_array;
     }
 
+    function _on_article_update($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+        $post_array['modifyBy'] = $session_data['id'];
+        return $post_array;
+    }
 
+    //pages callbacks
+    //--------------------------------------------------------
+
+    function _on_page_create($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['createdByIndicator'] = $session_data['id'];
+
+        return $post_array;
+    }
+
+    function _on_page_update($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['modifyBy'] = $session_data['id'];
+
+        return $post_array;
+    }
+
+    //users callbacks
+    //--------------------------------------------------------
+
+    //stops the user from changing the password.
+    function prevent_user_password_edit() {
+        return "Please use the 'Change User Password' option to change passwords.";
+    }
+
+
+    //THIS IS FOR ON-ADD
+    function _hash_password_before_insert($post_array) {
+        $options = array('cost'=>15);
+        $post_array['password'] = password_hash($post_array['password'],PASSWORD_DEFAULT, $options);
+        $session_data = $this->session->userdata('logged_in');
+        $post_array['createdByIndicator'] = (int) $session_data['id'];
+        return $post_array;
+    }
+
+    //THIS IS FOR ON-EDIT
+
+    function _on_user_changed($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['modifyByIndicator'] = (int) $session_data['id'];
+        return $post_array;
+    }
+
+
+    //stylesheets callbacks
+    //---------------------------------------------------------
+
+    function _on_stylesheet_create($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['createsByIndicator'] = $session_data['id'];
+        return $post_array;
+    }
+
+    function _on_stylesheet_update($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['lastModifyBy'] = $session_data['id'];
+        return $post_array;
+    }
+
+    //contentarea callbacks
+    //---------------------------------------------------------
+
+    function on_contentarea_create($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['creatByIndicator'] = (int) $session_data['id'];
+
+        return $post_array;
+    }
+
+    function on_contentarea_update($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+        $post_array['modifyByIndicator'] = (int) $session_data['id'];
+        return $post_array;
+    }
+
+    //-----------------------------------------------------------
 
     function logout() {
         $this->session->unset_userdata('logged_in');

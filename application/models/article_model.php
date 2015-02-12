@@ -10,10 +10,10 @@ require_once 'Article.php';
 
 class article_model extends CI_Model {
     public function getAllArticlesByPageID($page) {
-        $query = $this->db->query('SELECT * FROM articles WHERE page_id = '.$page.' ORDER BY articles.createDate ASC');
+        $query = $this->db->query('SELECT * FROM articles WHERE page_id = '.$page.' OR allPages = 1 ORDER BY articles.createDate ASC');
 
         foreach($query->result_array() as $row) {
-            $articles[] = new Article($row['id'], $row['title'],$row['body'],$row['description'],$row['contentArea_id']);
+            $articles[] = new Article($row['id'], $row['title'],$row['body'],$row['allPages'],$row['description'],$row['contentArea_id']);
         }
 
         return $articles;
