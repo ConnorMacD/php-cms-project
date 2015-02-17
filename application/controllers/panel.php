@@ -101,12 +101,18 @@ class Panel extends CI_Controller {
                 $crud = new ajax_grocery_CRUD();
                 $crud->set_table('pages');
                 $session_data = $this->session->userdata('logged_in');
-                $crud->set_relation('createdByIndicator','users', 'username',null,null,$default_value = $session_data['id']);
-                $crud->set_relation('modifyByIndicator','users', 'username',null,null,$default_value = $session_data['id']);
+                $crud->set_relation('createdByIndicator','users', 'username');
+                $crud->set_relation('modifyByIndicator','users', 'username');
 
+                $crud->callback_before_insert(array($this, '_on_pages_create'));
+                $crud->callback_before_update(array($this, '_on_pages_update'));
+
+                $crud->field_type("createdByIndicator","readonly",'');
+                $crud->field_type("modifyByIndicator","readonly",'');
                 $crud->field_type('modifyDate','hidden',date("Y-m-d H:i:s"));
                 $crud->field_type('creationDate','hidden',date("Y-m-d H:i:s"));
                 $crud->add_fields('name','alias','description','createdByIndicator','creationDate');
+                $crud->edit_fields('name','alias','description','modifyByIndicator','modifyDate');
 
                 $output = $crud->render();
                 $this->load->view('crud_view',$output);
@@ -209,7 +215,11 @@ class Panel extends CI_Controller {
                 $crud->add_fields('username', 'firstName', 'lastName', 'password', 'createdByIndicator', 'creationDate');
                 $crud->edit_fields('firstName', 'lastName', 'password', 'modifyByIndicator', 'modifyDate');
 
+                $crud->unique_fields('username');
+
                 $crud->callback_edit_field('password', array($this, 'prevent_user_password_edit'));
+
+                $crud->set_rules('username',"Username","required|min_length[8]|is_unique[users.username]");
                 $crud->callback_before_insert(array($this, '_hash_password_before_insert'));
                 $crud->callback_before_update(array($this, '_on_user_changed'));
 
@@ -233,18 +243,49 @@ class Panel extends CI_Controller {
 
     //roles crud
     function roles() {
-        //add quick checking
-        $crud = new grocery_CRUD();
+        if($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if (in_array(3, $session_data['roles'])) {
 
-        $crud->set_table('users_roles');
-        $crud->set_subject('role');
+                $crud = new grocery_CRUD();
 
-        $crud->set_relation('user_id','users','username');
-        $crud->set_relation('roles_id','roles','name');
+                $crud->set_table('users_roles');
+                $crud->set_subject('role');
 
-        $output = $crud->render();
+                $crud->set_relation('user_id','users','username');
+                $crud->set_relation('roles_id','roles','name');
 
-        $this->load->view('crud_view',$output);
+                $output = $crud->render();
+
+                $this->load->view('crud_view',$output);
+
+            } else {
+                //No session? No access.
+                redirect('login','refresh');
+            }
+        } else {
+            //No session? No access.
+            redirect('login','refresh');
+        }
+    }
+
+    //pages callbacks
+    //--------------------------------------------------------
+
+    function _on_pages_create($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['createdByIndicator'] = $session_data['id'];
+
+        return $post_array;
+    }
+
+    function _on_pages_update($post_array) {
+        $session_data = $this->session->userdata('logged_in');
+
+        $post_array['modifyByIndicator'] = $session_data['id'];
+
+        return $post_array;
     }
 
 
